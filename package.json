@@ -1,0 +1,35 @@
+{
+  "name": "r3f-vite-starter",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@react-spring/three": "9.6.1",
+    "@react-three/drei": "^9.111.3",
+    "@react-three/fiber": "^8.17.6",
+    "@react-three/rapier": "^1.5.0",
+    "@react-three/uikit": "^0.8.4",
+    "@react-three/uikit-apfel": "^0.8.4",
+    "@react-three/xr": "^6.4.9",
+    "@tonejs/midi": "^2.0.28",
+    "@wavesurfer/react": "^1.0.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.167.1",
+    "three-stdlib": "^2.34.0",
+    "wavesurfer.js": "^7.8.8",
+    "zustand": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "globals": "^15.9.0",
+    "vite": "^5.4.1"
+  }
+}
