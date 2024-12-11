@@ -22,7 +22,24 @@ export function UI() {
           alignItems="center"
           gap={32}
         >
-          <Card borderRadius={32} padding={16}>
+          <Card
+            borderRadius={32}
+            padding={16}
+            flexDirection={"column"}
+            alignItems={"center"}
+            gap={8}
+          >
+            <Image
+              src="images/wawa-taiko.png"
+              width={120}
+              onClick={() => window.open("https://wawasensei.dev", "_blank")}
+            />
+            <Text
+              fontSize={11}
+              onClick={() => window.open("https://wawasensei.dev", "_blank")}
+            >
+              by Wawa Sensei
+            </Text>
             <Container
               flexDirection="column"
               justifyContent="space-between"
@@ -31,38 +48,36 @@ export function UI() {
             >
               <Container flexDirection="row" gap={8}>
                 {songs.map((song, idx) => (
-                  // <Button
-                  //   key={idx}
-                  //   padding={12}
-                  //   variant="rect"
-                  //   size="sm"
-                  //   platter
-                  //   onClick={() => loadSong(song.path)}
-                  // >
                   <Container key={idx} flexDirection="column" gap={4}>
                     <Card
                       onClick={(e) => {
                         e.stopPropagation();
-                        loadSong(song.path);
+                        loadSong(song);
                       }}
                       hover={{
                         backgroundOpacity: 0.5,
                       }}
-                      borderRadius={9999}
-                      flexDirection={"row"}
+                      borderRadius={16}
+                      flexDirection={"column"}
                       gap={4}
-                      // minWidth={200}
-                      paddingRight={32}
+                      padding={4}
                     >
                       <Image
-                        width={80}
-                        height={80}
+                        width={142}
+                        height={142}
                         objectFit={"cover"}
                         keepAspectRatio={false}
-                        borderRadius={9999}
-                        src={"thumbnails/song1.webp"}
+                        borderRadius={16}
+                        src={song.thumbnail}
                       />
-                      <Text size="sm">{song.name}</Text>
+                      <Text
+                        maxWidth={142}
+                        fontSize={13}
+                        textAlign={"center"}
+                        fontWeight={"bold"}
+                      >
+                        {song.name}
+                      </Text>
                     </Card>
                   </Container>
                   // </Button>

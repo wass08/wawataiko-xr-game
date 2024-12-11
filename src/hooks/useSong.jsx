@@ -33,6 +33,9 @@ export const NOTES_POSITIONS = {
   Crash: { x: 0.7, y: 0.1 },
 };
 
+const applauseAudio = new Audio("audios/applause.mp3");
+export const missAudio = new Audio("audios/miss.mp3");
+
 export const useSong = create((set, get) => {
   const loadSong = async (song) => {
     if (song === null) {
@@ -41,14 +44,21 @@ export const useSong = create((set, get) => {
         curAudio.pause();
       }
       set({
+        currentSong: null,
         songData: null,
       });
       return;
     }
-    const audio = new Audio(`${song}.mp3`);
+    const audio = new Audio(`${song.path}.mp3`);
     await audio.play();
-    const midi = await Midi.fromUrl(`${song}.mid`);
-    console.log(midi);
+    audio.addEventListener("ended", () => {
+      set({ songEnded: true });
+      applauseAudio.currentTime = 0;
+      applauseAudio.play();
+    });
+
+    const midi = await Midi.fromUrl(`${song.path}.mid`);
+
     const notes = [];
     midi.tracks.forEach((track) => {
       //tracks have notes and controlChanges
@@ -57,6 +67,8 @@ export const useSong = create((set, get) => {
       notes.push(...track.notes);
     });
     set({
+      currentSong: song,
+      songEnded: false,
       songData: {
         midi,
         notes,
@@ -102,19 +114,24 @@ export const useSong = create((set, get) => {
   return {
     songs: [
       {
-        name: "WawaRock",
-        path: "audios/audiostock_1111962",
-      },
-      {
-        name: "TropicaWawa",
+        name: "Tropical Wawa",
         path: "audios/audiostock_199178",
+        thumbnail: "thumbnails/tropical-wawa.webp",
       },
       {
-        name: "Song 3",
+        name: "Wawa City Pop",
+        path: "audios/audiostock_1274720",
+        thumbnail: "thumbnails/wawa-city-pop.webp",
+      },
+      {
+        name: "Wawa Rock",
         path: "audios/audiostock_1111962",
+        thumbnail: "thumbnails/wawa-rock.webp",
       },
     ],
+    currentSong: null,
     songData: null,
+    songEnded: false,
     loadSong,
     getNotePosition,
     registerOnNotePlayed,
@@ -129,36 +146,17 @@ export const useSong = create((set, get) => {
       [NOTE_TYPES.GOOD]: 0,
       [NOTE_TYPES.PERFECT]: 0,
     },
-    updateScore: (type) =>
-      set((state) => ({
-        combo: type === NOTE_TYPES.MISS ? 0 : state.combo + 1,
-        score: { ...state.score, [type]: state.score[type] + 1 },
-      })),
+    updateScore: (type) => {
+      set((state) => {
+        if (type === NOTE_TYPES.MISS && state.combo > 0) {
+          missAudio.currentTime = 0;
+          missAudio.play();
+        }
+        return {
+          combo: type === NOTE_TYPES.MISS ? 0 : state.combo + 1,
+          score: { ...state.score, [type]: state.score[type] + 1 },
+        };
+      });
+    },
   };
 });
-
-//the file name decoded from the first track
-// const name = midi.name
-// console.log(midi.header.tempos);
-// //get the tracks
-// midi.tracks.forEach(track => {
-//   //tracks have notes and controlChanges
-
-//   //notes are an array
-//   const notes = track.notes;
-//   console.log(notes);
-//   notes.forEach(note => {
-//     //note.midi, note.time, note.duration, note.name
-//   })
-
-//   //the control changes are an object
-//   //the keys are the CC number
-//   track.controlChanges[64]
-//   //they are also aliased to the CC number's common name (if it has one)
-//   track.controlChanges.sustain.forEach(cc => {
-//     // cc.ticks, cc.value, cc.time
-//   })
-
-//   //the track also has a channel and instrument
-//   //track.instrument.name
-// })

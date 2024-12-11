@@ -1,14 +1,11 @@
-import { Container, Root, Text } from "@react-three/uikit";
+import { Container, Image, Root, Text } from "@react-three/uikit";
 import { Button, Card, Defaults } from "@react-three/uikit-apfel";
-import { useXR } from "@react-three/xr";
 import { useEffect, useState } from "react";
 import { NOTE_TYPES, useSong } from "../hooks/useSong";
 
 export function ScoreBoard() {
   const loadSong = useSong((state) => state.loadSong);
-  const songs = useSong((state) => state.songs);
-  const mode = useXR((state) => state.mode);
-  const session = useXR((state) => state.session);
+  const currentSong = useSong((state) => state.currentSong);
   const songData = useSong((state) => state.songData);
   const score = useSong((state) => state.score);
 
@@ -24,25 +21,35 @@ export function ScoreBoard() {
           alignItems="center"
           gap={32}
         >
-          <Card borderRadius={32} padding={16}>
+          <Card borderRadius={32} padding={16} transformRotateX={24}>
             <Container
-              flexDirection="column"
+              flexDirection="row"
               justifyContent="center"
               alignItems="center"
-              gapRow={8}
+              gapColumn={12}
               minWidth={142}
             >
-              <Text>Song 1</Text>
-              <TimeDisplayer />
-              <Button
-                variant="rect"
-                size="sm"
-                platter
-                flexGrow={1}
-                onClick={() => loadSong(null)}
-              >
-                <Text>Exit</Text>
-              </Button>
+              <Image
+                width={80}
+                height={80}
+                objectFit={"cover"}
+                keepAspectRatio={false}
+                borderRadius={16}
+                src={currentSong.thumbnail}
+              />
+              <Container flexDirection="column" gap={4}>
+                <Text>{currentSong.name}</Text>
+                <TimeDisplayer />
+                <Button
+                  variant="rect"
+                  size="sm"
+                  platter
+                  flexGrow={1}
+                  onClick={() => loadSong(null)}
+                >
+                  <Text>Exit</Text>
+                </Button>
+              </Container>
             </Container>
           </Card>
           <Container flexDirection={"row"} gap={32}>
@@ -50,21 +57,25 @@ export function ScoreBoard() {
               title="Missed"
               color={"#FF5252"}
               score={score[NOTE_TYPES.MISS]}
+              transformRotateY={12}
             />
             <ScoreCard
               title="Ok"
               color="#00BCD4"
               score={score[NOTE_TYPES.OK]}
+              transformRotateY={5}
             />
             <ScoreCard
               title="Good"
               color="#FFC107"
               score={score[NOTE_TYPES.GOOD]}
+              transformRotateY={-5}
             />
             <ScoreCard
               title="Perfect"
               color="#7C4DFF"
               score={score[NOTE_TYPES.PERFECT]}
+              transformRotateY={-12}
             />
           </Container>
         </Container>
@@ -95,16 +106,21 @@ const TimeDisplayer = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, []);
-  return <Text>{displayTime}</Text>;
+  return (
+    <Text color={"#cecece"} fontSize={13}>
+      {displayTime}
+    </Text>
+  );
 };
 
-const ScoreCard = ({ title, score, color }) => {
+const ScoreCard = ({ title, score, color, ...props }) => {
   return (
     <Card
       borderRadius={32}
       padding={16}
       minWidth={120}
       justifyContent={"center"}
+      {...props}
     >
       <Container
         flexDirection="column"

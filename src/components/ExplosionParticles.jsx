@@ -1,15 +1,16 @@
-import { Instance, Instances } from "@react-three/drei";
+import { Instance, Instances, useTexture } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { memo, useMemo, useRef } from "react";
-import { MathUtils } from "three";
+import { Color, MathUtils } from "three";
 import { randFloat } from "three/src/math/MathUtils.js";
 import { useParticles } from "../hooks/useParticles";
 
 export const ExplosionParticles = () => {
+  const alphaMap = useTexture("/textures/note.png");
   return (
     <Instances frustumCulled={false} limit={2000} range={2000}>
       <planeGeometry args={[0.1, 0.1]} />
-      <meshStandardMaterial />
+      <meshStandardMaterial alphaMap={alphaMap} transparent depthTest={false} />
       <Explosions />
     </Instances>
   );
@@ -43,14 +44,17 @@ const Explosion = memo(({ explosion, nbParticles = 100, lifetime = 1000 }) => {
       new Array(nbParticles).fill().map(() => {
         const speed = Math.random() * 0.5 + 0.5;
         const angle = Math.random() * Math.PI * 2;
-        const size = randFloat(0.1, 0.5);
-        const randLifetime = randFloat(lifetime - 50, lifetime + 50);
+        const size = randFloat(0.1, 1);
+        const randLifetime = randFloat(lifetime - 250, lifetime + 250);
+        const adjustedColor = new Color(color).multiplyScalar(
+          randFloat(0.5, 3)
+        );
         return {
           speed,
           angle,
           size,
           lifetime: randLifetime,
-          color,
+          color: adjustedColor,
         };
       }),
     [nbParticles]

@@ -23,9 +23,9 @@ import { Notes } from "./Notes";
 import { NotesPlayer } from "./NotesPlayer";
 
 export const Experience = () => {
-  const songData = useSong((state) => state.songData);
+  const songEnded = useSong((state) => state.songEnded);
   const playNote = useSong((state) => state.playNote);
-  const playedNotes = useSong((state) => state.playedNotes);
+  const currentSong = useSong((state) => state.currentSong);
 
   useEffect(() => {
     const onKeyPress = (event) => {
@@ -51,23 +51,15 @@ export const Experience = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const timeout = setInterval(() => {
-  //     playNote("Middle");
-  //   }, 1000);
-  //   return () => {
-  //     clearInterval(timeout);
-  //   };
-  // }, []);
-
   const combo = useSong((state) => state.combo);
 
-  const dance =
-    combo > 50
+  const dance = songEnded
+    ? "Victory"
+    : combo > 100
       ? "Swing"
-      : combo > 20
+      : combo > 50
         ? "House"
-        : combo > 5
+        : combo > 10
           ? "HipHop"
           : "HappyIdle";
 
@@ -82,7 +74,7 @@ export const Experience = () => {
   }, [controls]);
 
   const springs = useSpring({
-    scale: combo > 0 ? 1 : 0,
+    scale: (combo > 0 || songEnded) && currentSong ? 1 : 0,
   });
 
   return (
@@ -120,16 +112,7 @@ export const Experience = () => {
           <Avatar avatar={"avatar_1733298250949"} animation={dance} />
         </animated.group>
       </group>
-      {/* <mesh position-z={-14} rotation-x={degToRad(-12)}>
-        <planeGeometry args={[60, 60]} />
-        <MeshTransmissionMaterial
-          color="mediumpurple"
-          distortion={0.4}
-          roughness={0.1}
-          temporalDistortion={0.5}
-          thickness={2}
-        />
-      </mesh> */}
+
       <OrbitControls makeDefault />
       <Environment preset="sunset" environmentIntensity={0.6} />
       <Gltf src="models/uploads_files_4381654_LightBlueSky.glb" />

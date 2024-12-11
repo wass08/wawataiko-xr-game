@@ -1,4 +1,4 @@
-import { Bvh, Stats } from "@react-three/drei";
+import { Bvh, Float, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { createXRStore, XR, XROrigin } from "@react-three/xr";
 import { DrumStick } from "./components/DrumStick";
@@ -19,28 +19,14 @@ function App() {
         <Stats />
         <color attach="background" args={["#ececec"]} />
         <XR store={store}>
-          {/* <Fullscreen
-              overflow="scroll"
-              scrollbarColor="black"
-              dark={{ backgroundColor: "black" }}
-              flexDirection="column"
-              gap={32}
-              paddingX={32}
-              alignItems="center"
-              padding={32}
-            > */}
           <group position-y={1} position-z={-5}>
-            <UI />
+            <Float rotationIntensity={0.4} speed={1.5}>
+              <UI />
+            </Float>
           </group>
-          <group
-            // rotation-y={degToRad(-25)}
-            position-y={3}
-            position-z={-5}
-            // position-x={1}
-          >
+          <group position-y={3} position-z={-5}>
             <ScoreBoard />
           </group>
-          {/* </Fullscreen> */}
           <group position-y={-1}>
             <Bvh firstHitOnly>
               <Experience />
