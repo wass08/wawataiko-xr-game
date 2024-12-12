@@ -6,3 +6,26 @@
 body {
   margin: 0;
 }
+
+.controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  padding: 16px;
+  gap: 16px;
+  pointer-events: none;
+}
+.controls__key {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  border: 2px solid #fff;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  padding: 8px 16px;
+}

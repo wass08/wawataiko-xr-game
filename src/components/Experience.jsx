@@ -33,13 +33,13 @@ export const Experience = () => {
         return;
       }
       switch (event.key) {
-        case "a":
+        case "s":
           playNote("Middle");
           break;
-        case "z":
+        case "d":
           playNote("Side");
           break;
-        case "e":
+        case "f":
           playNote("Crash");
           break;
       }

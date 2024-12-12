@@ -5,7 +5,7 @@ import { DrumStick } from "./components/DrumStick";
 import { Experience } from "./components/Experience";
 import { ScoreBoard } from "./components/ScoreBoard";
 import { UI } from "./components/ui";
-import { useSong } from "./hooks/useSong";
+import { NOTES_COLORS, useSong } from "./hooks/useSong";
 
 export const store = createXRStore({
   controller: DrumStick,
@@ -15,8 +15,25 @@ function App() {
   const score = useSong((state) => state.score);
   return (
     <>
-      <Canvas shadows camera={{ position: [0, 0.5, 1], fov: 70 }}>
-        <Stats />
+      <div className="controls">
+        <div className="controls__key" style={{ color: NOTES_COLORS.Middle }}>
+          S
+        </div>
+        <div className="controls__key" style={{ color: NOTES_COLORS.Side }}>
+          D
+        </div>
+        <div className="controls__key" style={{ color: NOTES_COLORS.Crash }}>
+          F
+        </div>
+      </div>
+      <Canvas
+        shadows
+        camera={{
+          position: window.innerWidth < 1024 ? [0, 0.8, 3] : [0, 0.5, 1],
+          fov: 70,
+        }}
+      >
+        {window.location.href.includes("localhost") && <Stats />}
         <color attach="background" args={["#ececec"]} />
         <XR store={store}>
           <group position-y={1} position-z={-5}>
