@@ -5,7 +5,7 @@ import { degToRad } from "three/src/math/MathUtils.js";
 import { DrumStick } from "./components/DrumStick";
 import { Experience } from "./components/Experience";
 import { ScoreBoard } from "./components/ScoreBoard";
-import { UI } from "./components/ui";
+import { UI } from "./components/UI";
 import { NOTES_COLORS } from "./hooks/useSong";
 
 export const store = createXRStore({
