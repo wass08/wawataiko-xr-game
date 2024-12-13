@@ -26,7 +26,6 @@ export const BouncingItem = memo(({ children, noteValue, ...props }) => {
     registerOnNotePlayed(onNotePlayed);
     return () => unregisterOnNotePlayed(onNotePlayed);
   }, []);
-  console.log("rerendered");
   return (
     <animated.group {...springs} {...props} ref={ref}>
       {children}
