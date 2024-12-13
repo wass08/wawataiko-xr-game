@@ -10,6 +10,8 @@ export function UI() {
   const mode = useXR((state) => state.mode);
   const session = useXR((state) => state.session);
   const songData = useSong((state) => state.songData);
+  const passthrough = useSong((state) => state.passthrough);
+  const setPassthrough = useSong((state) => state.setPassthrough);
   if (songData) {
     return null;
   }
@@ -94,7 +96,7 @@ export function UI() {
                     size="sm"
                     platter
                     flexGrow={1}
-                    onClick={() => store.enterVR()}
+                    onClick={() => store.enterAR()}
                   >
                     <Text>VR/AR</Text>
                   </Button>
@@ -105,7 +107,7 @@ export function UI() {
                       size="sm"
                       platter
                       flexGrow={1}
-                      onClick={() => store.enterAR()}
+                      onClick={() => setPassthrough(!passthrough)}
                     >
                       <Text>Passthrough</Text>
                     </Button>

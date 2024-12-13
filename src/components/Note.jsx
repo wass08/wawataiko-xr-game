@@ -1,5 +1,6 @@
 import { Instance } from "@react-three/drei";
-import { useEffect, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useEffect, useRef, useState } from "react";
 import {
   NOTES_COLORS,
   NOTES_MAPPING,
@@ -12,7 +13,6 @@ export const Note = ({ note, ...props }) => {
   const songData = useSong((state) => state.songData);
 
   const getNotePosition = useSong((state) => state.getNotePosition);
-
   useEffect(() => {
     if (!ref.current) {
       return;
@@ -24,11 +24,20 @@ export const Note = ({ note, ...props }) => {
     }
   }, [ref, note, songData]);
 
-  const score = useSong((state) => state.score); // Ensure to have a re-render when the score changes
+  const [played, setPlayed] = useState(false);
 
-  if (note?.playedStatus) {
+  useFrame(() => {
+    if (!ref.current) {
+      return;
+    }
+    if (!played && note.playedStatus) {
+      setPlayed(true);
+    }
+  });
+  if (played) {
     return null;
   }
+
   return (
     <group {...props} ref={ref} dispose={null}>
       <Instance scale={0.2} color={NOTES_COLORS[NOTES_MAPPING[note.midi]]} />

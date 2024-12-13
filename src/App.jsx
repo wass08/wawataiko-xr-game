@@ -1,18 +1,20 @@
 import { Bvh, Float, Stats } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { createXRStore, XR, XROrigin } from "@react-three/xr";
+import { degToRad } from "three/src/math/MathUtils.js";
 import { DrumStick } from "./components/DrumStick";
 import { Experience } from "./components/Experience";
 import { ScoreBoard } from "./components/ScoreBoard";
 import { UI } from "./components/ui";
-import { NOTES_COLORS, useSong } from "./hooks/useSong";
+import { NOTES_COLORS } from "./hooks/useSong";
 
 export const store = createXRStore({
   controller: DrumStick,
+  meshDetection: false,
+  planeDetection: false,
 });
 
 function App() {
-  const score = useSong((state) => state.score);
   return (
     <>
       <div className="controls">
@@ -41,7 +43,7 @@ function App() {
               <UI />
             </Float>
           </group>
-          <group position-y={3} position-z={-5}>
+          <group position-y={2} position-z={-3} rotation-x={degToRad(20)}>
             <ScoreBoard />
           </group>
           <group position-y={-1}>

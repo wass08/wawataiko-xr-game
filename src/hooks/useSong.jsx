@@ -112,6 +112,8 @@ export const useSong = create((set, get) => {
     onNotePlayed.forEach((fn) => fn(note));
   };
   return {
+    passthrough: false,
+    setPassthrough: (value) => set({ passthrough: value }),
     songs: [
       {
         name: "Tropical Wawa",

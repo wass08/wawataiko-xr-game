@@ -5,29 +5,11 @@ Command: npx gltfjsx@6.2.3 public/models/Drum stick.glb -o src/components/DrumSt
 
 import { useGLTF } from "@react-three/drei";
 import { DefaultXRInputSourceRayPointer } from "@react-three/xr";
-import React, { useRef } from "react";
-import { Quaternion, Vector3 } from "three";
+import React from "react";
 import { degToRad } from "three/src/math/MathUtils.js";
-import { useSong } from "../hooks/useSong";
 
 export function DrumStick(props) {
   const { nodes, materials } = useGLTF("/models/Drum stick.glb");
-  const ref = useRef();
-  // const rb = useRef();
-
-  const positionTmp = useRef(new Vector3());
-  const quaternionTmp = useRef(new Quaternion());
-
-  // useFrame(() => {
-  //   if (ref.current && rb.current) {
-  //     ref.current.getWorldPosition(positionTmp.current);
-  //     ref.current.getWorldQuaternion(quaternionTmp.current);
-
-  //     rb.current.setTranslation(positionTmp.current);
-  //     rb.current.setRotation(quaternionTmp.current);
-  //   }
-  // });
-  const playNote = useSong((state) => state.playNote);
 
   return (
     <group {...props} dispose={null}>

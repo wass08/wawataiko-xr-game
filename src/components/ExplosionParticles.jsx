@@ -8,7 +8,7 @@ import { useParticles } from "../hooks/useParticles";
 export const ExplosionParticles = () => {
   const alphaMap = useTexture("/textures/note.png");
   return (
-    <Instances frustumCulled={false} limit={2000} range={2000}>
+    <Instances frustumCulled={false} limit={500} range={500}>
       <planeGeometry args={[0.1, 0.1]} />
       <meshStandardMaterial alphaMap={alphaMap} transparent depthTest={false} />
       <Explosions />
@@ -16,28 +16,32 @@ export const ExplosionParticles = () => {
   );
 };
 
-const Explosions = () => {
+const Explosions = memo(() => {
+  const lastRemoveCheck = useRef(Date.now());
   const explosions = useParticles((state) => state.explosions);
   const removeExplosions = useParticles((state) => state.removeExplosions);
 
   useFrame(() => {
     const explosionsToRemove = [];
-    for (const explosion of explosions) {
-      if (explosion.time + explosion.lifetime < Date.now()) {
-        explosionsToRemove.push(explosion);
+    if (lastRemoveCheck.current + 1000 < Date.now()) {
+      for (const explosion of explosions) {
+        if (explosion.time + explosion.lifetime < Date.now()) {
+          explosionsToRemove.push(explosion);
+        }
       }
-    }
-    if (explosionsToRemove.length) {
-      removeExplosions(explosionsToRemove);
+      if (explosionsToRemove.length) {
+        removeExplosions(explosionsToRemove);
+      }
+      lastRemoveCheck.current = Date.now();
     }
   });
 
   return explosions.map((explosion) => (
     <Explosion key={explosion.uid} explosion={explosion} />
   ));
-};
+});
 
-const Explosion = memo(({ explosion, nbParticles = 100, lifetime = 1000 }) => {
+const Explosion = memo(({ explosion, nbParticles = 36, lifetime = 600 }) => {
   const { position, color } = explosion;
   const particles = useMemo(
     () =>

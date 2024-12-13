@@ -14,7 +14,7 @@ import {
 } from "../hooks/useSong";
 import { Note } from "./Note";
 
-export const Notes = ({ children }) => {
+export const Notes = () => {
   const ref = useRef();
   const songData = useSong((state) => state.songData);
   const registerOnNotePlayed = useSong((state) => state.registerOnNotePlayed);

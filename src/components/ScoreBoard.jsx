@@ -1,6 +1,6 @@
 import { Container, Image, Root, Text } from "@react-three/uikit";
 import { Button, Card, Defaults } from "@react-three/uikit-apfel";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NOTE_TYPES, useSong } from "../hooks/useSong";
 
 export function ScoreBoard() {
@@ -8,6 +8,10 @@ export function ScoreBoard() {
   const currentSong = useSong((state) => state.currentSong);
   const songData = useSong((state) => state.songData);
   const score = useSong((state) => state.score);
+
+  const onExit = useCallback(() => {
+    loadSong(null);
+  }, []);
 
   if (!songData) {
     return null;
@@ -21,7 +25,7 @@ export function ScoreBoard() {
           alignItems="center"
           gap={32}
         >
-          <Card borderRadius={32} padding={16} transformRotateX={24}>
+          <Card borderRadius={32} padding={16}>
             <Container
               flexDirection="row"
               justifyContent="center"
@@ -45,7 +49,7 @@ export function ScoreBoard() {
                   size="sm"
                   platter
                   flexGrow={1}
-                  onClick={() => loadSong(null)}
+                  onClick={onExit}
                 >
                   <Text>Exit</Text>
                 </Button>
